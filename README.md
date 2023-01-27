@@ -12,4 +12,4 @@
 ##### Dans la première partie du projet, nous avons créé deux fonctions afin de fusionner deux images et de les séparer. Pour cette amélioration, il est donc question de:
 - Créer une page web toute jolie.
 - Créer deux cases permettant l'importation des images.
-- Un bouton d'execution qui lance le programme créé dans la première partie du projet.
+- Un bouton d'execution qui lance le programme créé dans la première partie du projet (traduit en javascript).
