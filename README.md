@@ -14,5 +14,6 @@
 - Créer deux cases permettant l'importation des images.
 - Un bouton d'execution qui lance le programme créé dans la première partie du projet (traduit en javascript).
 ### Liens utiles:
-- http://svgicons.sparkk.fr/
 - https://www.w3schools.com/html/default.asp
+- https://www.youtube.com/watch?v=7rJeXpK9qjs&t=338s
+- http://svgicons.sparkk.fr/
