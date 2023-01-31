@@ -14,5 +14,5 @@
 - Créer deux cases permettant l'importation des images.
 - Un bouton d'execution qui lance le programme créé dans la première partie du projet (traduit en javascript).
 ### Liens utiles:
-- https://stackoverflow.com/questions/29192994/how-to-set-coordinatesposition-of-an-image-in-a-webpage
+- http://svgicons.sparkk.fr/
 - https://www.w3schools.com/html/default.asp
