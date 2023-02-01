@@ -1,0 +1,113 @@
+h1
+{
+    font-family: "Marker Felt";
+    color : grey;
+    text-align: center;
+}
+
+.rectangle1 {
+    height: 275px;
+    width: 450px;
+    background-color: lightgray;
+    position: absolute;
+    top: 55%;
+    left: 15%;
+  }
+
+
+  .rectangle2 {
+    height: 275px;
+    width: 450px;
+    background-color: lightgray;
+    position: absolute;
+    top: 55%;
+    left: 55%;
+  }
+
+
+.rectangle3 {
+    height: 200px;
+    width: 300px;
+    background-color: lightgray;
+    position: absolute;
+    top: 15%;
+    left: 40%;
+    text-align: center;
+    line-height: 150px;
+  }
+
+.rectangle3:hover {
+    background-color: grey;
+}
+
+.button {
+    border-radius: 12px;
+    background-color: lightblue;
+    color: black;
+    border: none;
+    text-align: center;
+    font-size: 15px;
+    padding: 20px;
+    width: 150px;
+    transition: all 0.5s;
+    margin: 5px;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+}
+  
+.button span {
+    cursor: pointer;
+    position: relative;
+    transition: 0.5s;
+}
+  
+.button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+  
+.button:hover span {
+    padding-right: 25px;
+}
+  
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+  .side-nav {
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+  }
+  
+
+  .wrapper {
+    background: grey;
+    height: 100vh;
+    width: 75px;
+  }
+  
+  .nav-bloc {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    border-bottom: 1px solid #f2f2f21e;
+  }
+  .nav-bloc:hover {
+    background: rgb(24, 24, 24);
+  }
+
+  .nav-bloc svg {
+    width: 25px;
+    fill: #f2f2f2;
+    transition:  0.2s ease-in-out ;
+  }
+
+ 
