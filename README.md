@@ -17,3 +17,7 @@
 - https://www.w3schools.com/html/default.asp
 - https://www.youtube.com/watch?v=7rJeXpK9qjs&t=338s
 - http://svgicons.sparkk.fr/
+
+<input type="file"
+       id="avatar" name="avatar"
+       accept="image/png, image/jpeg">
