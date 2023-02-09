@@ -3,7 +3,7 @@
 <head>
 <title>STEGANOGRAPHIE</title>
 </head>
-<body>
+<body onload="init()">
 <link rel="stylesheet" href="stegano1.css"/>
 
 <h1>STEGANOGRAPHIE</h1>
@@ -13,14 +13,14 @@
 <div class="rectangle2"></div>
 
 <div class="rectangle3">
-    <input type="file"
-       id="image3" name="image3"
-       accept="image/png, image/jpeg">
+    <p>Importer ici votre image</p>
 </div>
 
-<button class= "button", onclick="decoder()"><span>EXECUTER</span></button>
+<button class= "button", onclick="decoder(image_code)"><span>EXECUTER</span></button>
 
-<nav class="side-nav">
+<button onclick="telechargement()">Téléchargement</button>
+
+    <nav class="side-nav">
     <div class="wrapper">
         <a href="stegano.html">
             <div class="nav-bloc n-1">
@@ -48,6 +48,116 @@
     </div>
   </nav>
 
+
+
+<script>
+    
+    function init() {
+        oCanvas1 = document.getElementById("image1");
+        oCanvas2 = document.getElementById("image2");
+        oCanvas3 = document.getElementById("image3");
+        
+        loadImageIntoCanvas('image')
+        loadImageIntoCanvas('gouv.jpg', oCanvas1, 0, 0);
+        loadImageIntoCanvas('illuminati.jpg', oCanvas2, 0, 0);
+
+        const canvas = document.getElementById('resultat');
+        const ctx = canvas.getContext('2d');
+        const imageData = ctx.createImageData(100, 100);
+
+        // Fill the array with RGBA values
+        for (let i = 0; i < imageData.data.length; i += 4) {
+            // Percentage in the x direction, times 255
+            let x = (i % 400) / 400 * 255;
+            // Percentage in the y direction, times 255
+            let y = Math.ceil(i / 400) / 100 * 255;
+
+            // Modify pixel data
+            imageData.data[i + 0] = x;        // R value
+            imageData.data[i + 1] = y;        // G value
+            imageData.data[i + 2] = 255 - x;  // B value
+            imageData.data[i + 3] = 255;      // A value
+        }
+
+        // Draw image data to the canvas
+        ctx.putImageData(imageData, 20, 20);
+    }
+
+    function loadImageIntoCanvas(filename, canvas, x, y) {
+        let img = new Image(); 
+        img.src = filename;
+
+        img.onload = function() {
+            // add it to the canvas
+            canvas.width = 480; 
+            canvas.height = 480;
+            let oContext = canvas.getContext("2d");
+            oContext.drawImage(img, x, y, canvas.width, canvas.height);
+        };
+
+    }
+
+
+    function decoder(img_coder){
+        //Cette fonction part de l'image créée par cacher()
+        //et récupère les bits de points forts des deux images cachées.
+        let pixels_image_width = img_coder.width
+        let pixels_image_height = img_coder.height
+        let img_decoder = new Image(pixels_image_width, pixels_image_height,[], {kind:"RGB"})
+        let img_decoder1 = new Image((pixels_image_width, pixels_image_height,[], {kind:"RGB"}))
+        for (let x=0; x < pixels_image_width; x++){
+            for (let y=0; y < pixels_image_height; y++){
+                // on récupère le pixel à la position x,y de img_coder
+                let pixels_wait_coder = img_coder.getPixel((x, y))
+                
+                let rc_wait = pixels_wait_coder[0].toString(2)
+                let vc_wait = pixels_wait_coder[1].toString(2)
+                let bc_wait = pixels_wait_coder[2].toString(2)
+                // on supprime le 0b
+                let r0b = rc_wait.slice[2,8]
+                let v0b = vc_wait.slice[2,8]
+                let b0b = bc_wait.slice[2,8]
+                // on ajoute des '0' pour coder sur 8 bits
+                let r1 = (8 - r0b.length) * "0" + toString(r0b)
+                let v1 = (8 - v0b.length) * "0" + toString(v0b)
+                let b1 = (8 - b0b.length) * "0" + toString(b0b)
+                // on récupere les bits de la premiere image
+                let r3_fort = r1.slice[0,5]
+                let v3_fort = v1.slice[0,5]
+                let b3_fort = b1.slice[0,5]
+                // on récupère les bits de la deuxième image
+                let r3_faible = r1.slice[5,8]
+                let v3_faible = v1.slice[5,8]
+                let b3_faible = b1.slice[5,8]
+                // on ajoute des '0' pour coder le pixel sur 8 bits
+                let r9 = toString(r3_fort) + (8 - r3_fort.length) * "0"
+                let v9 = toString(v3_fort) + (8 - v3_fort.length) * "0"
+                let b9 = toString(b3_fort) + (8 - b3_fort.length) * "0"
+                let r8 = toString(r3_faible) + (8 - r3_faible.length) * "0"
+                let v8 = toString(v3_faible) + (8 - v3_faible.length) * "0"
+                let b8 = toString(b3_faible) + (8 - b3_faible.length) * "0"
+                // conversion en décimal
+                let rconv = parseInt(r9, 2)
+                let vconv = parseInt(v9, 2)
+                let bconv = parseInt(b9, 2)
+                img_decoder.setPixel((x, y), (rconv, vconv, bconv))
+                let rconv1 = parseInt(r8, 2)
+                let vconv1 = parseInt(v8, 2)
+                let bconv1 = parseInt(b8, 2)
+                img_decoder1.setPixel((x, y), (rconv1, vconv1, bconv1))
+            }
+        }
+        //img_decoder.show()
+        //img_decoder1.show()
+    }
+
+    function telechargement(){
+        
+        //image_code.télécharger()
+
+    }
+
+</script>
 
 </body>
 </html>

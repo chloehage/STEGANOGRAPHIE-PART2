@@ -9,17 +9,13 @@
 <h1>STEGANOGRAPHIE</h1>
 
 <div class="rectangle1">
-    <input type="file"
-       id="image1" name="image1"
-       accept="image/png, image/jpeg">
+    <p>Importer ici la première image</p> 
 </div>
 
 <button class= "button", onclick="cacher()"><span>EXECUTER</span></button>
 
 <div class="rectangle2">
-    <input type="file"
-       id="image2" name="image2"
-       accept="image/png, image/jpeg">
+    <p>Importer ici la deuxième image</p>
 </div>
 
 <div class="rectangle3"></div>
@@ -53,7 +49,131 @@
       </a>
     </div>
   </nav>
+  <canvas id="image1"></canvas>
+  <canvas id="image2"></canvas>
+  <canvas id="resultat"></canvas>
+  <canvas id="telechargement"></canvas>
+<script>
 
+  function init() {
+        oCanvas1 = document.getElementById("image1");
+        oCanvas2 = document.getElementById("image2");
+        oCanvas3 = document.getElementById("image3");
+        
+        loadImageIntoCanvas('image')
+        loadImageIntoCanvas('gouv.jpg', oCanvas1, 0, 0);
+        loadImageIntoCanvas('illuminati.jpg', oCanvas2, 0, 0);
+
+        const canvas = document.getElementById('resultat');
+        const ctx = canvas.getContext('2d');
+        const imageData = ctx.createImageData(100, 100);
+
+        // Fill the array with RGBA values
+        for (let i = 0; i < imageData.data.length; i += 4) {
+            // Percentage in the x direction, times 255
+            let x = (i % 400) / 400 * 255;
+            // Percentage in the y direction, times 255
+            let y = Math.ceil(i / 400) / 100 * 255;
+
+            // Modify pixel data
+            imageData.data[i + 0] = x;        // R value
+            imageData.data[i + 1] = y;        // G value
+            imageData.data[i + 2] = 255 - x;  // B value
+            imageData.data[i + 3] = 255;      // A value
+        }
+
+        // Draw image data to the canvas
+        ctx.putImageData(imageData, 20, 20);
+    }
+
+    function loadImageIntoCanvas(filename, canvas, x, y) {
+        let img = new Image(); 
+        img.src = filename;
+
+        img.onload = function() {
+            // add it to the canvas
+            canvas.width = 480; 
+            canvas.height = 480;
+            let oContext = canvas.getContext("2d");
+            oContext.drawImage(img, x, y, canvas.width, canvas.height);
+        };
+
+    }
+
+
+  function cacher(image_front, image_back){
+    
+    //Cette fonction récupère les codes r,v,b de chaque pixel
+    //des deux images (image_front et image_back) et  les convertie
+    //en binaire pour les redistribuer et creer les pixels d'une troisième image
+    //(img_coder).
+
+    let pixels_image_width = image_front.width
+    let pixels_image_height = image_front.height
+    let img_coder = new Image(pixels_image_width, pixels_image_height,[], {kind:"RGB"})
+    
+    for (let x=0; x < pixels_image_width; x++){
+        for (let y=0; y < pixels_image_height; y++){
+            // on récupère les pixels à la position x,y de image_front
+            let pixels = image_front.getPixel((x, y))
+            // conversion du code RVB en binaire
+            let r_wait = pixels[0].toString(2)
+            let v_wait = pixels[1].toString(2)
+            let b_wait = pixels[2].toString(2)
+            r_wait = toString(r_wait.slice(2,8))
+            v_wait = toString(v_wait.slice(2,8))
+            b_wait = toString(b_wait.slice(2,8))
+            if (r_wait.length < 8){
+                r_wait = (8 - r_wait.length) * "0" + r_wait
+            }
+            if (v_wait.length < 8 ){
+                v_wait = (8 - v_wait.length) * "0" + v_wait
+            }
+            if (b_wait.length < 8){
+                b_wait = (8 - b_wait.length) * "0" + b_wait
+            }
+            // découpage du code RVB pour récupérer les 5 bits de point fort
+            let r_fort = r_wait.slice(0,5)
+            let v_fort = v_wait.slice(0,5)
+            let b_fort = b_wait.slice(0,5)
+            // on récupère les pixels à la position x,y de image_back
+            let pixelss = image_back.getPixel((x, y))
+            // conversion du code RVB en binaire
+            let r2_wait = pixelss[0].toString(2)
+            let v2_wait = pixelss[1].toString(2)
+            let b2_wait = pixelss[2].toString(2)
+            r2_wait = toString(r2_wait.slice(2,8))
+            v2_wait = toString(v2_wait.slice(2,8))
+            b2_wait = toString(b2_wait.slice(2,8))
+            if (r2_wait.length < 8){
+                r2_wait = (8 - r2_wait.length) * "0" + r2_wait
+            }
+            if (v2_wait.length < 8){
+                v2_wait = (8 - v2_wait.length) * "0" + v2_wait
+            }
+            if (b2_wait.length < 8){
+                b2_wait = (8 - b2_wait.length) * "0" + b2_wait
+            }
+            // découpage du code RVB pour récupérer les 3 bits de point faible
+            let r2_fort = r2_wait.slice(0,3)
+            let v2_fort = v2_wait.slice(0,3)
+            let b2_fort = b2_wait.slice(0,3)
+            // on assemble les 5 bits de image_front et les 3 de image_back
+            let r = r_fort + r2_fort
+            let v = v_fort + v2_fort
+            let b = b_fort + b2_fort
+            // reconversion en décimal
+            let rconv = parseInt(r, 2)
+            let vconv = parseInt(v, 2)
+            let bconv = parseInt(b, 2)
+            // formation du pixel sur l'image finale
+            img_coder.setPixel((x, y), (rconv, vconv, bconv))
+        }
+    }
+    img_coder.save("img_code.jpg")
+    //img_coder.show()
+  }
+</script>
 
 </body>
 </html>
